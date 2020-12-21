@@ -13,7 +13,7 @@ export const MovieList = ({ moviesReader }: Props) => {
   if (!movies || movies.length === 0) return <Center fontSize="2xl">No movies found!</Center>;
 
   return (
-    <SimpleGrid columns={[1, 2, 2, 3]} spacing={6} >
+    <SimpleGrid columns={[1, 1, 2, 3]} spacing={6} >
       {movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)}
     </SimpleGrid>
   );

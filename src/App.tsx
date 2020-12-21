@@ -1,11 +1,11 @@
-import { Box, Center, Flex, Spinner } from '@chakra-ui/react';
+import { Box, Center, Spinner } from '@chakra-ui/react';
 import { Suspense, unstable_useTransition as useTransition, useCallback, useState } from 'react';
 import { fetchMovies, Movie } from './api/movies';
+import { ErrorBoundary } from './ErrorBoundary';
 import { MovieList } from './MovieList';
-import { createResource, ResourceReader } from './utils/resource';
 import { SearchInput } from './SearchInput';
 import { randomTitle } from './utils/randomTitle';
-import { ErrorBoundary } from './ErrorBoundary';
+import { createResource, ResourceReader } from './utils/resource';
 
 const INITIAL_VALUE = randomTitle(['Pulp Fiction', 'Men in Black', 'Iron Man', 'The Shawshank Redemption', 'The Godfather', 'Star Wars']);
 

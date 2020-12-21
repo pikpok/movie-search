@@ -1,5 +1,5 @@
-import { Box, Button, Input, Text, Stack, chakra } from "@chakra-ui/react"
-import { useCallback, useState } from "react"
+import { Box, Button, chakra, Input, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
 
 interface Props {
   initialValue: string;
@@ -9,6 +9,8 @@ interface Props {
 export const SearchInput = ({ onChange, initialValue }: Props) => {
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
+  const headerBackground = useColorModeValue('blue.400', 'blue.800')
+  const inputBackground = useColorModeValue('white', 'gray.800')
 
   const onTitleInputChange = useCallback((value: string) => {
     setTitle(value);
@@ -21,7 +23,7 @@ export const SearchInput = ({ onChange, initialValue }: Props) => {
   };
 
   return (
-    <Box p="4" roundedBottom="lg" bg="blue.400">
+    <Box p="4" roundedBottom="lg" bg={headerBackground}>
       <Text mb="1" align="center" fontSize="2xl" fontWeight="bold" color="white">
         Search for movies 🍿
       </Text>
@@ -32,7 +34,7 @@ export const SearchInput = ({ onChange, initialValue }: Props) => {
 
       <Stack spacing={4} direction={['column', 'row']}>
         <Input
-          bg="white"
+          bg={inputBackground}
           autoFocus
           minW={100}
           value={title}
@@ -42,7 +44,7 @@ export const SearchInput = ({ onChange, initialValue }: Props) => {
         />
 
         <Input
-          bg="white"
+          bg={inputBackground}
           minW={100}
           value={year}
           placeholder="Year (optional)"

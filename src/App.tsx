@@ -27,7 +27,7 @@ export function App() {
         {resource
           ? (
             <ErrorBoundary>
-              <Suspense fallback={<Center><Spinner size="2xl" /></Center>}>
+              <Suspense fallback={<Center><Spinner size="xl" /></Center>}>
                 <MovieList moviesReader={resource} />
               </Suspense>
             </ErrorBoundary>

@@ -3,7 +3,7 @@ import { Suspense, unstable_useTransition as useTransition, useCallback, useStat
 import { fetchMovies, Movie } from './api/movies';
 import { ErrorBoundary } from './ErrorBoundary';
 import { MovieList } from './MovieList';
-import { SearchInput } from './SearchInput';
+import { Header } from './Header';
 import { randomTitle } from './utils/randomTitle';
 import { createResource, ResourceReader } from './utils/resource';
 
@@ -13,7 +13,7 @@ export function App() {
   const [resource, setResource] = useState<ResourceReader<Movie[]> | null>(null);
   const [startTransition, isPending] = useTransition({ busyDelayMs: 100, busyMinDurationMs: 400 });
 
-  const onChange = useCallback((title: string, year: string) => {
+  const onSearch = useCallback((title: string, year: string) => {
     startTransition(() => {
       setResource(createResource(() => fetchMovies(title, year)))
     });
@@ -21,7 +21,7 @@ export function App() {
 
   return (
     <Box>
-      <SearchInput onChange={onChange} initialValue={INITIAL_VALUE} />
+      <Header onSearch={onSearch} initialValue={INITIAL_VALUE} />
 
       <Box my={6} px={4} opacity={isPending ? 0.5 : 1} transition="opacity 100ms 200ms">
         {resource

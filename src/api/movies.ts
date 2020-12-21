@@ -1,4 +1,4 @@
-type MovieType = 'movie' | 'series' | 'episode';
+type MovieType = 'movie' | 'series' | 'episode' | 'game';
 
 export interface Movie {
   id: string;
@@ -27,10 +27,18 @@ interface ApiResponseFailure {
 
 type ApiResponse = ApiResponseSuccess | ApiResponseFailure;
 
-export function fetchMovies(query: string): Promise<Movie[]> {
+export function fetchMovies(title: string, year = ''): Promise<Movie[]> {
   const apiKey = process.env.REACT_APP_API_KEY || '';
+  const params = new URLSearchParams({
+    apikey: apiKey,
+    s: title,
+  });
 
-  return fetch(`https://www.omdbapi.com/?apikey=${apiKey}&s=${encodeURIComponent(query)}`)
+  if (year) {
+    params.set('y', year);
+  }
+
+  return fetch(`https://www.omdbapi.com/?${params.toString()}`)
     .then((res) => res.json())
     .then((res: ApiResponse) => {
       if (res.Response === 'True') {

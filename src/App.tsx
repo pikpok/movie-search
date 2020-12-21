@@ -1,32 +1,39 @@
-import { Box, Flex, Spinner } from '@chakra-ui/react';
+import { Box, Center, Flex, Spinner } from '@chakra-ui/react';
 import { Suspense, unstable_useTransition as useTransition, useCallback, useState } from 'react';
-import { fetchMovies } from './api/movies';
+import { fetchMovies, Movie } from './api/movies';
 import { MovieList } from './MovieList';
-import { createResource } from './utils/resource';
+import { createResource, ResourceReader } from './utils/resource';
 import { SearchInput } from './SearchInput';
+import { randomTitle } from './utils/randomTitle';
+import { ErrorBoundary } from './ErrorBoundary';
 
-const INITIAL_VALUE = 'Pulp Fiction';
+const INITIAL_VALUE = randomTitle(['Pulp Fiction', 'Men in Black', 'Iron Man', 'The Shawshank Redemption', 'The Godfather', 'Star Wars']);
 
 export function App() {
-  const [resource, setResource] = useState(() => createResource(() => fetchMovies(INITIAL_VALUE)))
+  const [resource, setResource] = useState<ResourceReader<Movie[]> | null>(null);
   const [startTransition, isPending] = useTransition({ busyDelayMs: 100, busyMinDurationMs: 400 });
 
-  const onChange = useCallback((value: string) => {
+  const onChange = useCallback((title: string, year: string) => {
     startTransition(() => {
-      setResource(createResource(() => fetchMovies(value)))
+      setResource(createResource(() => fetchMovies(title, year)))
     });
   }, [startTransition, setResource])
 
   return (
     <Box>
-      <Box>
-        <SearchInput onChange={onChange} initialValue={INITIAL_VALUE} />
-      </Box>
+      <SearchInput onChange={onChange} initialValue={INITIAL_VALUE} />
 
       <Box my={6} px={4} opacity={isPending ? 0.5 : 1} transition="opacity 100ms 200ms">
-        <Suspense fallback={<Flex justifyContent="center"><Spinner /></Flex>}>
-          <MovieList moviesReader={resource} />
-        </Suspense>
+        {resource
+          ? (
+            <ErrorBoundary>
+              <Suspense fallback={<Center><Spinner size="2xl" /></Center>}>
+                <MovieList moviesReader={resource} />
+              </Suspense>
+            </ErrorBoundary>
+          )
+          : <Center fontSize="xl">Search for movies using form above</Center>
+        }
       </Box>
     </Box>
   );

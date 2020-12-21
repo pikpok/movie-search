@@ -18,6 +18,7 @@ export const SearchInput = ({ onChange, initialValue }: Props) => {
       <Input
         bg="white"
         mr="4"
+        minW={100}
         value={search}
         onChange={({ target }) => onInputChange(target.value)}
       />

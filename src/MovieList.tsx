@@ -1,4 +1,6 @@
+import { SimpleGrid } from "@chakra-ui/react";
 import { Movie } from "./api/movies";
+import { MovieCard } from "./MovieCard";
 import { ResourceReader } from "./utils/resource";
 
 interface Props {
@@ -11,10 +13,8 @@ export const MovieList = ({ moviesReader }: Props) => {
   if (!movies || movies.length === 0) return <h1>No movies found!</h1>;
 
   return (
-    <div>
-      {movies.map((movie) => (
-        <h1 key={movie.id}>{movie.title} ({movie.year})</h1>
-      ))}
-    </div>
+    <SimpleGrid columns={[1, 2, 2, 3]} spacing={6} >
+      {movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)}
+    </SimpleGrid>
   );
 }
